@@ -1,7 +1,5 @@
-const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
-// const multiparty = require('multiparty');
 const formidable = require('formidable');
 require('colors');
 
@@ -20,7 +18,6 @@ app.use(express.static('assets'));
 
 app.get('/', (req, res) => res.status(200).sendFile('assets/index.html'));
 app.post('/user-form', (req, res) => {
-  // const form = new multiparty.Form();
   const form = new formidable.IncomingForm();
   form.parse(req, (err, fields, files) => {
     if (err) throw err;
