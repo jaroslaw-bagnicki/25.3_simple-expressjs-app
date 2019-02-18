@@ -7,7 +7,7 @@
   <title>25.4 Serving static files in Express.js</title>
 </head>
 <body>
-  <form action="http://localhost:8080/user-form" method="GET">
+  <form action="/user-form" enctype="multipart/form-data" method="POST">
     <input type="text" name="first-name">
     <input type="text" name="last-name">
     <button type="submit">Send form</button>
