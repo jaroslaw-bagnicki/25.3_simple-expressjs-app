@@ -4,10 +4,32 @@ const bodyParser = require('body-parser');
 require('colors');
 
 const PORT = 8080;
+
 const app = express();
+app.listen(PORT, function() {
+  let host = this.address().address;
+  host = host === '::' ? 'localhost' : host;
+  const port = this.address().port;
+  console.log(`Server listen on http://${host}:${port}`.blue);
+});
+
 app.use(bodyParser.json());
+app.use(express.static('assets'));
 
 let stringifyFile;
+
+app.get('/', (req, res) => res.status(200).sendFile('assets/index.html'));
+app.get('/user-form', (req, res) => {
+  const form = {
+    'first-name': req.query['first-name'],
+    'last-name': req.query['last-name']
+  };
+  console.log(req.query);
+  res.status(202).end(JSON.stringify(form));
+});
+
+app.get('/get-note', (req, res) => loadFile(res));
+app.post('/update-note/:note', (req, res) => updateFile(req, res));
 
 function loadFile(res) {
   fs.readFile('./test.json', 'utf8', (err, data) => {
@@ -26,8 +48,3 @@ function updateFile(req, res) {
   });
 }
 
-app.get('/get-note', (req, res) => loadFile(res));
-
-app.post('/update-note/:note', (req, res) => updateFile(req, res));
-
-app.listen(PORT, () => console.log(`Server listen on http://localhost:${PORT}`.blue));
